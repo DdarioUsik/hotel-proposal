@@ -464,23 +464,31 @@
       .calc-inputs, input[type=range], .slider-group { display: none !important; }
       .cta-section { display: none !important; }
 
-      /* Page break rules — prevent splits inside cards */
+      /* ── PAGE BREAKS ── */
+
+      /* New page before each major section */
+      .s-phases  { break-before: page; page-break-before: always; }
+      .s-opex    { break-before: page; page-break-before: always; }
+      .s-support { break-before: page; page-break-before: always; }
+
+      /* Never cut these mid-page */
       .phase-card,
       .scope-grid,
       .scope-card,
       .support-item,
       .team-card,
-      .pain-list li,
+      .team-grid,
+      .pain-list,
       .result-total,
       .calc-card,
-      .phase-note {
+      .phase-note,
+      .phase-deliverables {
         break-inside: avoid;
         page-break-inside: avoid;
       }
 
-      /* Force new page before heavy sections */
-      .phases { break-before: auto; }
-      section { break-before: auto; }
+      /* Each phase card on same page as its content */
+      .phases { break-inside: avoid; page-break-inside: avoid; }
 
       /* Grids — switch to 1-col on print to prevent overflow */
       .pain-list,
@@ -638,7 +646,7 @@
 
 <!-- ── PHASES ── -->
 <div class="wrap">
-  <section>
+  <section class="s-phases">
     <div class="section-label">Phased Implementation</div>
     <h2>Three focused steps. Results after each.</h2>
     <p style="font-size:15px; color: var(--muted); margin-bottom: 36px; max-width: 600px;">
@@ -745,7 +753,7 @@
 
 <!-- ── OPEX CALCULATOR ── -->
 <div class="wrap">
-  <section>
+  <section class="s-opex">
     <div class="section-label">Monthly Operating Costs</div>
     <h2>Your actual OPEX — adjust to your volume</h2>
     <p style="font-size:15px; color: var(--muted); margin-bottom: 28px; max-width: 600px;">
@@ -827,7 +835,7 @@
 
 <!-- ── SUPPORT ── -->
 <div class="wrap">
-  <section>
+  <section class="s-support">
     <div class="section-label">Ongoing Support</div>
     <h2>Technical support — transparent & predictable</h2>
     <p style="font-size:15px; color: var(--muted); margin-bottom: 28px;">Time & materials billing. Tracked monthly. No retainer required.</p>
