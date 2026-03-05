@@ -464,21 +464,48 @@
       .calc-inputs, input[type=range], .slider-group { display: none !important; }
       .cta-section { display: none !important; }
 
+      /* Page break rules — prevent splits inside cards */
+      .phase-card,
+      .scope-grid,
+      .scope-card,
+      .support-item,
+      .team-card,
+      .pain-list li,
+      .result-total,
+      .calc-card,
+      .phase-note {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Force new page before heavy sections */
+      .phases { break-before: auto; }
+      section { break-before: auto; }
+
+      /* Grids — switch to 1-col on print to prevent overflow */
+      .pain-list,
+      .scope-grid,
+      .phase-deliverables,
+      .support-grid,
+      .team-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
       /* Header */
       .header { border-bottom: 2px solid #e2e8f0; }
       .logo { color: #1e40af; }
       .header-meta { color: #64748b; }
 
       /* Hero */
-      .hero { padding: 32pt 0 24pt; border-bottom: 1px solid #e2e8f0; }
-      .hero h1 { font-size: 22pt; color: #0f172a; }
+      .hero { padding: 24pt 0 20pt; border-bottom: 1px solid #e2e8f0; }
+      .hero h1 { font-size: 20pt; color: #0f172a; }
       .hero-tag { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-      .hero-sub { color: #475569; }
+      .hero-sub { color: #475569; font-size: 10pt; }
 
       /* Sections */
-      section { padding: 24pt 0; border-bottom: 1px solid #f1f5f9; }
+      section { padding: 18pt 0; border-bottom: 1px solid #f1f5f9; }
       .section-label { color: #94a3b8; }
-      h2 { font-size: 15pt; color: #0f172a; }
+      h2 { font-size: 14pt; color: #0f172a; margin-bottom: 10pt; }
 
       /* Situation */
       .situation-text { color: #334155; border-left-color: #3b82f6; }
