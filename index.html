@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Hotel Assistant — Commercial Proposal · AIHUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b1120;
+      --surface:   #111827;
+      --card:      #1a2540;
+      --border:    rgba(255,255,255,0.07);
+      --blue:      #3b82f6;
+      --blue-glow: rgba(59,130,246,0.15);
+      --green:     #10b981;
+      --amber:     #f59e0b;
+      --purple:    #8b5cf6;
+      --text:      #f1f5f9;
+      --muted:     #64748b;
+      --subtle:    #94a3b8;
+      --radius:    14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── HEADER ── */
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      background: var(--blue);
+      border-radius: 50%;
+    }
+    .header-meta { font-size: 13px; color: var(--muted); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-glow);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      max-width: 680px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--subtle);
+      max-width: 580px;
+      line-height: 1.7;
+    }
+
+    /* ── SECTION ── */
+    section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    /* ── SITUATION ── */
+    .situation-text {
+      font-size: 16px;
+      color: var(--subtle);
+      line-height: 1.8;
+      max-width: 740px;
+      border-left: 3px solid var(--blue);
+      padding-left: 20px;
+    }
+    .pain-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .pain-list li {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 14px;
+      color: var(--subtle);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .pain-list li::before {
+      content: '→';
+      color: var(--amber);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── PHASES ── */
+    .phases { display: flex; flex-direction: column; gap: 16px; }
+
+    .phase-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .phase-card:hover { border-color: rgba(255,255,255,0.15); }
+    .phase-card.priority { border-color: rgba(59,130,246,0.35); }
+    .phase-card.advanced { border-color: rgba(139,92,246,0.3); }
+    .phase-card.parallel { border-color: rgba(16,185,129,0.3); }
+
+    .phase-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .phase-left { flex: 1; min-width: 0; }
+    .phase-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .phase-name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .phase-price-block {
+      text-align: right;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+    .phase-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge-blue  { color: var(--blue);   background: var(--blue-glow);          border: 1px solid rgba(59,130,246,0.3); }
+    .badge-green { color: var(--green);  background: rgba(16,185,129,0.1);       border: 1px solid rgba(16,185,129,0.25); }
+    .badge-purple{ color: var(--purple); background: rgba(139,92,246,0.1);       border: 1px solid rgba(139,92,246,0.25); }
+    .phase-price {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--amber);
+      line-height: 1;
+    }
+    .phase-timeline {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .phase-deliverables {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .phase-deliverables li {
+      font-size: 13.5px;
+      color: var(--subtle);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .phase-deliverables li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .phase-note {
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      border-left: 3px solid var(--muted);
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    /* ── SCOPE SUMMARY ── */
+    .scope-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .scope-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+    .scope-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    .scope-value { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .scope-card.highlight { border-color: rgba(59,130,246,0.35); background: rgba(59,130,246,0.07); }
+    .scope-card.highlight .scope-value { color: var(--blue); }
+    .scope-card .scope-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* ── CALCULATOR ── */
+    .calc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .calc-intro {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .calc-inputs { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+
+    .slider-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .slider-label { font-size: 14px; font-weight: 500; color: var(--subtle); }
+    .slider-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 12px;
+      border-radius: 6px;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    input[type=range] {
+      width: 100%;
+      appearance: none;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px; height: 18px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+    }
+
+    .calc-result {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .result-row:last-of-type { border-bottom: none; }
+    .result-row .label { color: var(--muted); }
+    .result-row .val { font-weight: 600; color: var(--subtle); }
+
+    .result-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding: 18px 20px;
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 10px;
+    }
+    .result-total .label { font-size: 14px; font-weight: 600; color: var(--subtle); }
+    .result-total .val {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--amber);
+      letter-spacing: -0.02em;
+    }
+    .calc-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── SUPPORT ── */
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .support-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .support-item .s-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .support-item .s-rate { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .support-item .s-detail { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .support-item.free { border-color: rgba(16,185,129,0.3); }
+    .support-item.free .s-rate { color: var(--green); }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .team-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .team-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .team-role { font-size: 12px; color: var(--blue); font-weight: 600; margin-bottom: 10px; }
+    .team-points { list-style: none; }
+    .team-points li {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 3px 0;
+      display: flex;
+      gap: 7px;
+      align-items: baseline;
+    }
+    .team-points li::before { content: '·'; color: var(--blue); font-weight: 900; }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 56px 0;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(139,92,246,0.08) 100%);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 18px;
+      padding: 44px 48px;
+      text-align: center;
+    }
+    .cta-box h2 {
+      font-size: 30px;
+      margin-bottom: 14px;
+      letter-spacing: -0.03em;
+    }
+    .cta-box p {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .cta-step {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── PRINT / PDF ── */
+    .no-print { }
+    @media print {
+      .no-print { display: none !important; }
+      @page { margin: 18mm 16mm; size: A4; }
+
+      body {
+        background: #fff !important;
+        color: #0f172a !important;
+        font-size: 11pt;
+      }
+
+      .wrap { max-width: 100%; padding: 0; }
+
+      /* Hide interactive elements */
+      .calc-inputs, input[type=range], .slider-group { display: none !important; }
+      .cta-section { display: none !important; }
+
+      /* Header */
+      .header { border-bottom: 2px solid #e2e8f0; }
+      .logo { color: #1e40af; }
+      .header-meta { color: #64748b; }
+
+      /* Hero */
+      .hero { padding: 32pt 0 24pt; border-bottom: 1px solid #e2e8f0; }
+      .hero h1 { font-size: 22pt; color: #0f172a; }
+      .hero-tag { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+      .hero-sub { color: #475569; }
+
+      /* Sections */
+      section { padding: 24pt 0; border-bottom: 1px solid #f1f5f9; }
+      .section-label { color: #94a3b8; }
+      h2 { font-size: 15pt; color: #0f172a; }
+
+      /* Situation */
+      .situation-text { color: #334155; border-left-color: #3b82f6; }
+      .pain-list li {
+        background: #f8fafc;
+        border-color: #e2e8f0;
+        color: #475569;
+        break-inside: avoid;
+      }
+      .pain-list li::before { color: #f59e0b; }
+
+      /* Phase cards */
+      .phase-card {
+        background: #f8fafc !important;
+        border: 1.5pt solid #e2e8f0 !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 10pt;
+      }
+      .phase-card.priority { border-color: #93c5fd !important; background: #f0f7ff !important; }
+      .phase-card.parallel { border-color: #6ee7b7 !important; background: #f0fdf4 !important; }
+      .phase-card.advanced { border-color: #c4b5fd !important; background: #faf5ff !important; }
+
+      .phase-num { color: #94a3b8; }
+      .phase-name { color: #0f172a; font-size: 13pt; }
+      .phase-price { color: #d97706 !important; font-size: 20pt; }
+      .phase-timeline { color: #94a3b8; }
+
+      .phase-badge { font-size: 7pt; }
+      .badge-blue  { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
+      .badge-green { color: #059669; background: #f0fdf4; border-color: #a7f3d0; }
+      .badge-purple{ color: #7c3aed; background: #faf5ff; border-color: #ddd6fe; }
+
+      .phase-deliverables li { color: #334155; font-size: 10pt; }
+      .phase-deliverables li::before { color: #059669; }
+      .phase-note { background: #f1f5f9; border-left-color: #94a3b8; color: #475569; }
+
+      /* Scope */
+      .scope-card { background: #f8fafc; border-color: #e2e8f0; break-inside: avoid; }
+      .scope-card.highlight { background: #eff6ff; border-color: #93c5fd; }
+      .scope-card.highlight .scope-value { color: #1d4ed8; }
+      .scope-label { color: #64748b; }
+      .scope-value { color: #0f172a; }
+      .scope-sub { color: #94a3b8; }
+
+      /* Calculator — show only results table */
+      .calc-card { background: #f8fafc; border-color: #e2e8f0; }
+      .calc-intro { display: none; }
+      .result-row .label { color: #64748b; }
+      .result-row .val { color: #334155; }
+      .result-total { background: #eff6ff; border-color: #93c5fd; }
+      .result-total .label { color: #475569; }
+      .result-total .val { color: #d97706; }
+      .calc-note { color: #94a3b8; }
+
+      /* Support */
+      .support-item { background: #f8fafc; border-color: #e2e8f0; break-inside: avoid; }
+      .support-item .s-label { color: #94a3b8; }
+      .support-item .s-rate { color: #0f172a; }
+      .support-item .s-detail { color: #64748b; }
+      .support-item.free { border-color: #a7f3d0; }
+      .support-item.free .s-rate { color: #059669; }
+
+      /* Team */
+      .team-card { background: #f8fafc; border-color: #e2e8f0; break-inside: avoid; }
+      .team-name { color: #0f172a; }
+      .team-role { color: #1d4ed8; }
+      .team-points li { color: #475569; }
+      .team-points li::before { color: #3b82f6; }
+
+      /* Footer */
+      .footer { color: #94a3b8; border-top-color: #e2e8f0; }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      .pain-list, .scope-grid, .phase-deliverables, .support-grid, .team-grid { grid-template-columns: 1fr; }
+      .phase-top { flex-direction: column; }
+      .phase-card.priority::before, .phase-card.advanced::before { position: static; display: inline-block; margin-bottom: 8px; }
+      .cta-box { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PRINT BUTTON ── -->
+<div style="position:fixed; bottom:24px; right:24px; z-index:999; display:flex; gap:10px;" class="no-print">
+  <button onclick="window.print()" style="background:#3b82f6; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; box-shadow:0 4px 12px rgba(59,130,246,0.4);">
+    ↓ Save as PDF
+  </button>
+</div>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="wrap header-inner">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      AIHUB
+    </div>
+    <div class="header-meta">Commercial Proposal · March 2026</div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-tag">AI Automation · Hospitality</div>
+    <h1>Turn every missed call and<br>unanswered message into<br><span>a confirmed booking</span></h1>
+    <p class="hero-sub">
+      A phased AI system that handles inbound calls, WhatsApp inquiries, and sales quality — built around your team, not instead of it.
+    </p>
+  </div>
+</div>
+
+<!-- ── SITUATION ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">The Situation</div>
+    <p class="situation-text">
+      Your team handles hundreds of calls and WhatsApp messages every month — manually, in real time, without a safety net. Every unanswered inquiry after hours is a booking that went to the competition. Every call where the agent forgot to log the deal is a guest that vanished from your CRM. The goal isn't to replace your staff — it's to make sure no conversation falls through the cracks.
+    </p>
+    <ul class="pain-list">
+      <li>Inbound calls after hours go unanswered — guests book elsewhere</li>
+      <li>WhatsApp threads pile up, response time lags, operators burn out</li>
+      <li>No systematic way to see which sales scripts work and which don't</li>
+      <li>Every new team member starts from zero — no captured knowledge base</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ── PHASES ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Phased Implementation</div>
+    <h2>Three focused steps. Results after each.</h2>
+    <p style="font-size:15px; color: var(--muted); margin-bottom: 36px; max-width: 600px;">
+      Each phase is self-contained — you get working deliverables before we move to the next one. No long wait, no black box.
+    </p>
+
+    <div class="phases">
+
+      <!-- PHASE 1 -->
+      <div class="phase-card priority">
+        <div class="phase-top">
+          <div class="phase-left">
+            <div class="phase-num">Phase 1 · Priority</div>
+            <div class="phase-name">Voice AI Agent</div>
+          </div>
+          <div class="phase-price-block">
+            <span class="phase-badge badge-blue">Start here</span>
+            <div class="phase-price">$3,500</div>
+            <div class="phase-timeline">3–4 weeks</div>
+          </div>
+        </div>
+        <ul class="phase-deliverables">
+          <li>AI voice agent for inbound call handling</li>
+          <li>2-persona knowledge base (FAQs + booking rules)</li>
+          <li>Automatic CRM deal log in Bitrix24</li>
+          <li>Smart escalation to human operator</li>
+          <li>Works with Zadarma / Bitrix24 telephony</li>
+          <li>24/7 availability — no extra staffing cost</li>
+        </ul>
+        <div class="phase-note">
+          <strong>What changes for you:</strong> Calls that previously went to voicemail after hours now get handled, logged, and routed — automatically.
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-card parallel">
+        <div class="phase-top">
+          <div class="phase-left">
+            <div class="phase-num">Phase 2 · Priority</div>
+            <div class="phase-name">WhatsApp AI Agent</div>
+          </div>
+          <div class="phase-price-block">
+            <span class="phase-badge badge-green">Can run in parallel</span>
+            <div class="phase-price">$1,500</div>
+            <div class="phase-timeline">2–3 weeks</div>
+          </div>
+        </div>
+        <ul class="phase-deliverables">
+          <li>WhatsApp bot with shared knowledge base</li>
+          <li>Reuses Phase 1 KB — no extra content work</li>
+          <li>Bitrix24 deal & task creation on every thread</li>
+          <li>Operator handoff with full conversation context</li>
+          <li>24/7 coverage across all time zones</li>
+          <li>Unlimited conversations (Meta API costs only)</li>
+        </ul>
+        <div class="phase-note">
+          <strong>What changes for you:</strong> WhatsApp becomes a managed sales channel, not a personal chat no one monitors.
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-card advanced">
+        <div class="phase-top">
+          <div class="phase-left">
+            <div class="phase-num">Phase 3 · Advanced</div>
+            <div class="phase-name">Sales QA & Analytics Dashboard</div>
+          </div>
+          <div class="phase-price-block">
+            <span class="phase-badge badge-purple">After phases 1–2</span>
+            <div class="phase-price">$3,000</div>
+            <div class="phase-timeline">4–5 weeks</div>
+          </div>
+        </div>
+        <ul class="phase-deliverables">
+          <li>AI transcription of every sales call</li>
+          <li>Script adherence scoring per agent</li>
+          <li>Per-call quality report — automatic</li>
+          <li>Team performance dashboard</li>
+          <li>Identifies best-performing conversation patterns</li>
+          <li>Recommended after Phases 1–2 are stable</li>
+        </ul>
+        <div class="phase-note">
+          <strong>What changes for you:</strong> You stop guessing why some agents close more bookings — you see the exact moments that drive conversion.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scope Summary -->
+    <div class="scope-grid" style="margin-top: 24px;">
+      <div class="scope-card highlight">
+        <div class="scope-label">Priority Scope (Phase 1 + 2)</div>
+        <div class="scope-value">$5,000</div>
+        <div class="scope-sub">5–7 weeks · Recommended start</div>
+      </div>
+      <div class="scope-card">
+        <div class="scope-label">Full Scope (Phase 1 + 2 + 3)</div>
+        <div class="scope-value">$8,000</div>
+        <div class="scope-sub">9–12 weeks · Complete system</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── OPEX CALCULATOR ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Monthly Operating Costs</div>
+    <h2>Your actual OPEX — adjust to your volume</h2>
+    <p style="font-size:15px; color: var(--muted); margin-bottom: 28px; max-width: 600px;">
+      Infrastructure costs are paid directly to providers (no markup). Adjust the sliders to see your real monthly spend.
+    </p>
+
+    <div class="calc-card">
+      <p class="calc-intro">🟡 Yellow = adjustable. All costs auto-calculate based on your monthly volume.</p>
+
+      <div class="calc-inputs">
+        <!-- Calls -->
+        <div class="slider-group">
+          <label>
+            <span class="slider-label">Voice calls / month</span>
+            <span class="slider-val" id="callsVal">500</span>
+          </label>
+          <input type="range" id="calls" min="100" max="2000" step="50" value="500"
+            oninput="document.getElementById('callsVal').textContent = this.value; calcOpex();">
+        </div>
+        <!-- Avg duration -->
+        <div class="slider-group">
+          <label>
+            <span class="slider-label">Avg call duration (min)</span>
+            <span class="slider-val" id="durationVal">3 min</span>
+          </label>
+          <input type="range" id="duration" min="1" max="10" step="0.5" value="3"
+            oninput="document.getElementById('durationVal').textContent = this.value + ' min'; calcOpex();">
+        </div>
+        <!-- WhatsApp -->
+        <div class="slider-group">
+          <label>
+            <span class="slider-label">WhatsApp conversations / month</span>
+            <span class="slider-val" id="waVal">1,000</span>
+          </label>
+          <input type="range" id="wa" min="100" max="5000" step="100" value="1000"
+            oninput="document.getElementById('waVal').textContent = Number(this.value).toLocaleString(); calcOpex();">
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <div class="result-row">
+          <span class="label">Voice AI — TTS + STT (speech processing)</span>
+          <span class="val" id="r_voice">$105.00</span>
+        </div>
+        <div class="result-row">
+          <span class="label">LLM tokens — Voice calls</span>
+          <span class="val" id="r_llm_voice">$11.25</span>
+        </div>
+        <div class="result-row">
+          <span class="label">WhatsApp — Meta API fees</span>
+          <span class="val" id="r_wa_meta">$45.00</span>
+        </div>
+        <div class="result-row">
+          <span class="label">LLM tokens — WhatsApp</span>
+          <span class="val" id="r_llm_wa">$72.00</span>
+        </div>
+        <div class="result-row">
+          <span class="label">Cloud infrastructure & hosting</span>
+          <span class="val">$30.00</span>
+        </div>
+        <div class="result-row" style="color: var(--muted); font-size:12px; padding-top:4px;">
+          <span class="label">Bitrix24 subscription</span>
+          <span class="val" style="color:var(--muted);">client-side cost</span>
+        </div>
+
+        <div class="result-total">
+          <span class="label">Estimated monthly infrastructure</span>
+          <span class="val" id="r_total">~$263</span>
+        </div>
+
+        <p class="calc-note">
+          ✦ All usage costs are estimates. Actual costs depend on call volume, duration, and LLM model choice.
+          First 3 months include proactive monitoring at no charge. Technical support billed separately at €50/hr.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── SUPPORT ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Ongoing Support</div>
+    <h2>Technical support — transparent & predictable</h2>
+    <p style="font-size:15px; color: var(--muted); margin-bottom: 28px;">Time & materials billing. Tracked monthly. No retainer required.</p>
+
+    <div class="support-grid">
+      <div class="support-item free">
+        <div class="s-label">First 3 months</div>
+        <div class="s-rate">Included</div>
+        <div class="s-detail">Proactive monitoring & QA. No extra charge post-launch.</div>
+      </div>
+      <div class="support-item">
+        <div class="s-label">Standard support</div>
+        <div class="s-rate">€50 / hr</div>
+        <div class="s-detail">Bug fixes, KB updates, CRM logic changes. Tracked & invoiced monthly.</div>
+      </div>
+      <div class="support-item">
+        <div class="s-label">Emergency SLA</div>
+        <div class="s-rate">€75 / hr</div>
+        <div class="s-detail">Critical fix. Response within 4 hours. On request only.</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 13px; color: var(--muted);">
+      Typical monthly support: <strong style="color: var(--subtle);">2–4 hours</strong> for routine adjustments (KB updates, new FAQs, CRM automations). Estimated monthly: <strong style="color: var(--subtle);">€100–200</strong>.
+    </div>
+  </section>
+</div>
+
+<!-- ── TEAM ── -->
+<div class="wrap">
+  <section>
+    <div class="section-label">Who Builds This</div>
+    <h2>Small team. Full ownership.</h2>
+    <p style="font-size:15px; color: var(--muted); margin-bottom: 28px;">You work directly with the people doing the work — not account managers.</p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-name">Danil Usik</div>
+        <div class="team-role">CEO · Strategy & Architecture</div>
+        <ul class="team-points">
+          <li>Business diagnostics, system design</li>
+          <li>Stakeholder alignment, commercial lead</li>
+          <li>5+ years B2B sales & AI automation</li>
+          <li>Based in Valencia, Spain</li>
+        </ul>
+      </div>
+      <div class="team-card">
+        <div class="team-name">Svetlana</div>
+        <div class="team-role">CTO · Engineering & Integration</div>
+        <ul class="team-points">
+          <li>Leads a team of 8 engineers</li>
+          <li>CRM / telephony / API integrations</li>
+          <li>Knowledge base architecture</li>
+          <li>Your technical point of contact</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px; padding: 14px 18px; background: rgba(255,255,255,0.03); border-radius: 10px; font-size: 13px; color: var(--muted);">
+      AIHUB · Practical AI · 8-person engineering team · 50+ automation projects · Hotels, fintech, healthcare, e-commerce
+    </div>
+  </section>
+</div>
+
+<!-- ── CTA ── -->
+<div class="wrap">
+  <div class="cta-section">
+    <div class="cta-box">
+      <h2>Ready to start with Phase 1?</h2>
+      <p>
+        We recommend beginning with the Voice AI Agent — it's the fastest path to measurable results and the foundation everything else builds on.
+      </p>
+      <div class="cta-step">→ Let's lock in Phase 1 scope and kickoff date</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="wrap">
+  <div class="footer">
+    <span>AIHUB · Practical AI · practicalai.es</span>
+    <span>Commercial Proposal · March 2026 · Confidential</span>
+  </div>
+</div>
+
+<script>
+  function calcOpex() {
+    const calls    = parseFloat(document.getElementById('calls').value);
+    const duration = parseFloat(document.getElementById('duration').value);
+    const wa       = parseFloat(document.getElementById('wa').value);
+
+    // Voice TTS+STT: $0.07/min
+    const voiceMin  = calls * duration;
+    const voiceCost = voiceMin * 0.07;
+
+    // LLM voice: $0.015 per 1k tokens, ~1500 tokens/call
+    const llmVoice = (calls * 1500 / 1000) * 0.015;
+
+    // WhatsApp Meta API: $0.045/convo, 1000 free/mo
+    const waChargeable = Math.max(0, wa - 1000);
+    const waMeta = waChargeable * 0.045;
+
+    // LLM WhatsApp: 6 msgs × 800 tokens × $0.015/1k
+    const llmWa = (wa * 6 * 800 / 1000) * 0.015;
+
+    const infra = 30;
+
+    const total = voiceCost + llmVoice + waMeta + llmWa + infra;
+
+    const fmt = (n) => '$' + n.toFixed(2);
+
+    document.getElementById('r_voice').textContent     = fmt(voiceCost);
+    document.getElementById('r_llm_voice').textContent = fmt(llmVoice);
+    document.getElementById('r_wa_meta').textContent   = fmt(waMeta);
+    document.getElementById('r_llm_wa').textContent    = fmt(llmWa);
+    document.getElementById('r_total').textContent     = '~$' + Math.round(total);
+  }
+
+  // Init
+  calcOpex();
+</script>
+
+</body>
+</html>
